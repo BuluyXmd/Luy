@@ -1,101 +1,121 @@
-<!doctype html>
-<html lang="id"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Cek Kodam</title> 
-  <link rel="stylesheet" href="style.css"> 
- <style type="text/css" id="dcoder_stylesheet">body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-body {
-    background-image: url('foto.jpeg');
-    background-size: cover; 
-    background-repeat: no-repeat; 
-    background-position: center; 
-}
-
-button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-#result {
-    margin-top: 20px;
-    font-size: 18px;
-    text-align: center;
-}</style></head> 
- <body> 
-  <div class="container"> 
-   <h1>Cek Informasi Kodam</h1> 
-   <form id="kodamForm"> <label for="kodam">Masukkan Nama Kodam:</label> 
-    <input type="text" id="kodam" name="kodam" placeholder="Contoh: Kodam Jaya" required> <button type="submit">Cek</button> 
-   </form> 
-   <div id="result"></div> 
-  </div> 
-  <script src="script.js"></script> 
- 
-<script type="text/javascript" id="dcoder_script">document.getElementById('kodamForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const kodamInput = document.getElementById('kodam').value.trim().toLowerCase();
-    const resultDiv = document.getElementById('result');
-
-    const kodamData = {
-        "oyan": "Kodam oyan adalah harimau.",
-        "kodam iii siliwangi": "Kodam III/Siliwangi adalah Kodam yang berada di wilayah Jawa Barat.",
-        "kodam iv diponegoro": "Kodam IV/Diponegoro adalah Kodam yang berada di wilayah Jawa Tengah.",
-        "wahyu": "kodam wahyu adalah kontol kecil.",
-        "rifqie": "kodam rifqie adalah kucing oyen",
-        "adhika": "kodam Adhika adalah katak bhizer.",
-        "adriyan":"kodam dari Adriyan adalah Panda.",
-        "zefri":"kodam dari zefri adalah ambacong."
-    };  
-
-    if (kodamData[kodamInput]) {
-        resultDiv.textContent = kodamData[kodamInput];
-    } else {
-        resultDiv.textContent = "Informasi Kodam tidak ditemukan.";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>web Sederhana</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-})</script></body></html>
+    h1 {
+      margin-top: 20px;
+    }
+    #videoContainer {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 10px;
+      background-color: #222;
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .comment-section {
+      margin-top: 10px;
+    }
+    .comment {
+      background: #333;
+      padding: 5px;
+      margin: 5px 0;
+      border-radius: 5px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      padding: 8px 12px;
+      margin-top: 5px;
+      background: #ff2d55;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #uploadForm {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>video</h1>
+
+  <form id="uploadForm">
+    <input type="file" id="videoInput" accept="video/*" required />
+    <button type="submit">Upload Video</button>
+  </form>
+
+  <div id="videoContainer"></div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const videoContainer = document.getElementById("videoContainer");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const file = document.getElementById("videoInput").files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      addVideo(url);
+    });
+
+    function addVideo(src) {
+      const videoBox = document.createElement("div");
+
+      videoBox.innerHTML = `
+        <video controls>
+          <source src="${src}" type="video/mp4">
+          Browser kamu tidak mendukung video.
+        </video>
+        <div class="comment-section">
+          <h3>Komentar</h3>
+          <div class="comments"></div>
+          <input type="text" placeholder="Tulis komentar..." />
+          <button class="commentBtn">Kirim</button>
+        </div>
+      `;
+
+      const commentBtn = videoBox.querySelector(".commentBtn");
+      const commentInput = videoBox.querySelector("input[type='text']");
+      const commentsDiv = videoBox.querySelector(".comments");
+
+      commentBtn.addEventListener("click", () => {
+        const comment = commentInput.value.trim();
+        if (comment) {
+          const p = document.createElement("div");
+          p.className = "comment";
+          p.textContent = comment;
+          commentsDiv.appendChild(p);
+          commentInput.value = "";
+        }
+      });
+
+      videoContainer.prepend(videoBox);
+    }
+  </script>
+</body>
+</html>.
